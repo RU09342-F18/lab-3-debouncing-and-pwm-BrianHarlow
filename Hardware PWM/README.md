@@ -1,18 +1,11 @@
-# Hardware PWM
-Now that you have done the software version of PWM, now it is time to start leveraging the other features of these Timer Modules.
+# Brian Harlow's Hardware PWM
 
-## Task
-You need to replicate the same behavior as in the software PWM, only using the Timer Modules ability to directly output to a GPIO Pin instead of managing them in software. One way to thing about what should happen is that unless your are doing some other things in your code, your system should initialize, set the Timer Modules, and then turn off the CPU.
+## Program Purpose
+This program was designed to perform the same purpose as the Software PWM. However, this program differs because as opposed to using a timer interrupt to determine when the LED is toggled, we are using the output of a GPIO pin.
 
-## Deliverables
-You will need to have two folders in this repository, one for each of the processors that you used for this part of the lab. Remember to replace this README with your own.
+## Functionality
+A clock is set to up mode to trigger a overflow interrupt flag when the timer reaches a value set in CCR0. Another capture/compare register, CCRx, is set to another value at a certain percentage of CCR0 to determine the pulse width. The output for LED is ran through another GPIO pin that differs depending on the microcontroller. The smaller the pulse width, the dimmer the LED will be. When the CCRx value is hit, another interrupt flag toggles the LED as does the CCR0 overflow. The button press changes the value in CCRx to change the pulse width, and thus the brightness of the LED.
 
-### Hints
-Read up on the P1SEL registers as well as look at the Timer modules ability to multiplex.
-
-## Extra Work
-### Using ACLK
-Some of these microprocessors have a built in ACLK which is extremely slow compared to your up to 25MHz available on some of them. What is the overall impact on the system when using this clock? Can you actually use your PWM code with a clock that slow?
-
-### Ultra Low Power
-Using a combination of ACLK, Low Power Modes, and any other means you may deem necessary, optimize this PWM code to run at 50% duty cycle with a LED on the MSP430FR5994. In particular, time how long your code can run on the fully charged super capacitor. You do not need to worry about the button control in this case, and you will probably want to disable all the GPIO that you are not using (nudge, nudge, hint, hint).
+## Microcontrollers Used
+* MSP430F5529 - The LED used is at P1.0 and the button is at P1.1. The clock used is the ACLK at 10 kHz.
+* MSP430FR2311 - The LED used is at P1.0 and the button is at P1.1. The clock used is the ACLK set to 32 kHz.
